@@ -1,12 +1,11 @@
 module matutils
     implicit none
-    !private
+    private
 
     !declaration
-    !public :: trace, norme, 
+    public :: MatrixSparse, trace, norme, mat_vect
     
     type MatrixSparse
-        !double precision, dimension(:), allocatable :: val
         double precision, dimension(:), allocatable :: val
         integer, dimension(:), allocatable :: nnz
         integer, dimension(:), allocatable :: icol
@@ -22,7 +21,6 @@ module matutils
         subroutine trace(A)
             !declarations
             type(MatrixSparse), intent(in) :: A 
-            !double precision :: trax
             double precision :: trax
             integer :: i, k, n
             
@@ -83,12 +81,6 @@ module matutils
                 end do 
             end do 
 
-            !do i=1,n
-            !    k1=A%nnz(i) + 1
-            !    k2= A%nnz(i+1)
-            !    z(i)= A%val(k1)*y(A%icol(k1)) + A%val(k2)*y(A%icol(k2))
-            !end do
-
         end function mat_vect
 
         function mat_mat(A,B) result(C)
@@ -99,12 +91,11 @@ module matutils
             double precision, dimension(size(A%nnz) - 1, size(B, dim=2)) :: C
             double precision :: s 
             integer :: i, j, k, l, n, m
-            !l, n, m, p, q, s 
 
 
             !Instructions
             n = size(A%nnz) - 1  !ligne number of A
-            m = size(B, dim=2)   !!ligne number of B
+            m = size(B, dim=2)   !column number of B
             if (n .NE. m) then
                 print*, 'Not matching dimension'
             end if

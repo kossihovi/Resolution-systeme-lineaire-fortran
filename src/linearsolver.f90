@@ -1,6 +1,9 @@
 module linearsolver
     use matutils
     implicit none
+    private
+
+    public :: jacobi
 
     contains
         subroutine jacobi(A,b,kmax,epsilon)
@@ -30,23 +33,18 @@ module linearsolver
                     if (A%icol(j) == i) D(i) = A%val(j)
                 end do
             end do
-            print*, 'The diagonal of matrix A is : ', D 
+            !print*, 'The diagonal of matrix A is : ', D 
 
-            if (any(D .EQ. 0)) then  !verify if at least one elemnnt is null
+            if (any(D .EQ. 0)) then  !verify if at least one element is null
                 print*, 'zero on the diagonal'
                 return
             end if
-
-            !print *, 'b       = ', b
-            !print *, 'kmax    = ', kmax
-            !print *, 'epsilon = ', epsilon
             
             k = 0
             x = 0
-            !converge = .FALSE.
             do while(k .LT. kmax)
                 !calcul of y=Ax
-                y = A * x !or y=mat_vect(A,x) 
+                y=mat_vect(A,x) !y = A * x or 
                 !compute of residue of L2 error
                 r = sqrt(dot_product(b-y, b-y))
                 if (r .LT. epsilon) then
@@ -61,9 +59,9 @@ module linearsolver
             if (.NOT. converge) then 
                 print*, 'The algorithm attains kmax'
             end if 
-            print*, 'Iterations : ', k
-            print*, 'The solution of the linear system is :', x
-            print*, 'The final residu is', r
+            !print*, 'Iterations : ', k
+            !print*, 'The solution of the linear system is :', x
+            !print*, 'The final residu is', r
 
             !Write the solution in file 'res.dat'
             open(unit=1, file= 'res.dat', status='replace')

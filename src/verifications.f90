@@ -1,17 +1,14 @@
 !gfortran -Wall -pedantic -o verifications matutils.f90 linearsolver.f90 verifications.f90
-
 program verifications
     use matutils
     use linearsolver
+    use benchmark
     implicit none
 
     !declarations
     type(MatrixSparse) :: A
-    !double precision, dimension(size(A%nnz)-1) :: x, D, b
-    !double precision, dimension(size(x)) :: 
-    !double precision, dimension(4) :: D, b
     double precision, dimension(:), allocatable :: x, D, b
-    double precision :: epsilon, a1, a2, a3, a4, s  
+    double precision :: epsilon, a1, a2, a3, a4, s, temp  
     integer :: i, kmax, n, err, nnelmt, j, k
 
 
@@ -35,9 +32,6 @@ program verifications
     read(2, *) epsilon
     close(2)
 
-    !print *, 'b       = ', b
-    !print *, 'kmax    = ', kmax
-    !print *, 'epsilon = ', epsilon
 
     !Test of convergence of Jacobi method
     s = abs(a1) + abs(a3) + abs(a4)  
@@ -75,13 +69,6 @@ program verifications
         end if 
     end if 
 
-
-    ! compute principal diagonal
-    !do i=1, 4
-    !    D(i) = a2
-    !end do
-    !print*, D 
-
     !compute Sparse matrix A
     A%nnz(1) = 0
     k = 0
@@ -101,9 +88,6 @@ program verifications
         end do
         A%nnz(i+1) = k
     end do
-    !print*, A%nnz
-    !print*, A%val
-    !print*, A%icol
 
 
     !compute and print trace and norm of the matrix 
@@ -113,10 +97,14 @@ program verifications
     !Resolve the Jacobi problem and save the solution in file "res.dat"
     call jacobi(A, b, kmax, epsilon)
     
+    !compute time of resolution by Jacobi
+    temp = bench(n)
 
     deallocate(A%nnz)
     deallocate(A%val)
     deallocate(A%icol)
     deallocate(x, D, b)
+
+
 end program verifications
 
