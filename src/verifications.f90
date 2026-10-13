@@ -2,23 +2,25 @@
 program verifications
     use matutils
     use linearsolver
-    use benchmark
+    !use benchmark
     implicit none
 
     !declarations
     type(MatrixSparse) :: A
     double precision, dimension(:), allocatable :: x, D, b
-    double precision :: epsilon, a1, a2, a3, a4, s, temp  
+    double precision, dimension(100) :: vect_b
+    double precision :: epsilon, a1, a2, a3, a4, s!, temp  
     integer :: i, kmax, n, err, nnelmt, j, k
 
 
     !Instructions
-    !call random_number(4)
+    call random_number(vect_b)
     ! create and read the constant diagonals of matrix A from a file
     open(unit=2, file='lp.dat', status = 'replace')
-    write(2, *) 4
-    write(2, *) 1, 4, 2, 1
-    write(2, *) 1, 0, -2, 1
+    write(2, *) 100
+    write(2, *) -1, 3, -1, 1!-1, 4, -1, -1 !1, 4, 2, 1 !1, 2, 3, 4 !       
+    write(2, *) vect_b
+    !write(2, *) 1, 0 , -1, 2
     write(2, *) 1000
     write(2, *) 1.0d-7
     close(2)
@@ -98,7 +100,7 @@ program verifications
     call jacobi(A, b, kmax, epsilon)
     
     !compute time of resolution by Jacobi
-    temp = bench(n)
+    !temp = bench(n)
 
     deallocate(A%nnz)
     deallocate(A%val)

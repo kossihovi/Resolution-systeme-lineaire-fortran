@@ -72,7 +72,6 @@ module matutils
                 print*, 'Not conforming dimension'
             end if
 
-            
             do i=1,n 
                 y(i) = 0
                 ! Iterate only over non-zero elements for row i

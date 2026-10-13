@@ -33,35 +33,33 @@ module linearsolver
                     if (A%icol(j) == i) D(i) = A%val(j)
                 end do
             end do
-            !print*, 'The diagonal of matrix A is : ', D 
 
             if (any(D .EQ. 0)) then  !verify if at least one element is null
                 print*, 'zero on the diagonal'
                 return
             end if
             
-            k = 0
-            x = 0
-            do while(k .LT. kmax)
+            
+            x = 0.0d0
+            do k = 1, kmax
                 !calcul of y=Ax
-                y=mat_vect(A,x) !y = A * x or 
-                !compute of residue of L2 error
+                y=mat_vect(A,x) !y = A * x 
+                !compute L2 error of residue 
                 r = sqrt(dot_product(b-y, b-y))
                 if (r .LT. epsilon) then
                     converge = .TRUE.
                     exit
                 else 
                     x = x - y/D + b/D
-                    k = k + 1 
                 end if 
             end do 
 
             if (.NOT. converge) then 
                 print*, 'The algorithm attains kmax'
             end if 
-            !print*, 'Iterations : ', k
+            print*, 'Iterations : ', k
             !print*, 'The solution of the linear system is :', x
-            !print*, 'The final residu is', r
+            print*, 'The final residu is', r
 
             !Write the solution in file 'res.dat'
             open(unit=1, file= 'res.dat', status='replace')

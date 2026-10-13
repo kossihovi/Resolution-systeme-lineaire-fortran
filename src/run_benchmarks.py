@@ -5,10 +5,9 @@ import bench
  
 
 #print(bench.bench_.__doc__) 
-#print(bench.bench(1000))   
+#print(bench.bench(1000000))   
 
 tailles = [1, 10, 100, 1000, 10000, 100000, 1000000]
-#tailles = [10, 100, 200, 300, 500, 1000]
 temps = []
 
 
@@ -17,21 +16,25 @@ for n in tailles:
     temps.append(t)
 
 
-#Plot of the time of system resolution
-#plt.plot(tailles, temps, marker='o')
-#plt.xlabel("Taille du système n ")
-#plt.ylabel(" Temps d'execution (s) ")
-#plt.title( "Temps d'éxecution de la méthode de Jacobi ")
-#plt.grid(False)
-#plt.savefig('bench.png')
-#plt.show()
+# Figure creation
+fig, ax = plt.subplots(figsize=(12, 6))
 
+# Resolution time layout
+ax.loglog(tailles, temps, 'd-', linewidth=1,
+        markersize=6, color='blue', markerfacecolor='white',
+        markeredgecolor='blue', label='Méthode de Jacobi')
 
+# Axis
+ax.set_xlabel("Taille du système n", fontsize=10)
+ax.set_ylabel("Temps d'execution (s)", fontsize=10)
 
-plt.loglog(tailles, temps, 's-')
-plt.xlabel('n')
-plt.ylabel('temps (s)')
-plt.title('Jacobi : temps de résolution')
-plt.grid(False, which='both')
-#plt.savefig('bench.png')
+# Lgend
+ax.legend(fontsize=8, loc='best')
+
+# Grill
+ax.grid(True, which='both', linestyle="--", alpha=0.3)
+
+plt.title('Temps de résolution de Jacobi en fonction de n', fontsize=10)
+plt.tight_layout()
+#plt.savefig('Jacobi_grille.png', dpi=300, bbox_inches='tight')
 plt.show()

@@ -14,8 +14,7 @@ subroutine bench(n, temp)
     double precision, parameter :: epsilon=1.0d-7
     integer :: i, k, nnelmt
     integer, parameter :: kmax=1000
-
-            
+ 
     !instruction
     nnelmt = 3*n - 2 !non null elements of matrix A
     allocate(A%nnz(n+1), A%val(nnelmt), A%icol(nnelmt))
