@@ -1,20 +1,18 @@
-subroutine bench(n, temp)
+function bench(n) result(temp)
     use matutils
     use linearsolver
     implicit none
-
+    
     !declarations
-    integer, intent(in) :: n 
-    double precision, intent(out) :: temp
-
     type(MatrixSparse) :: A
-
     double precision, dimension(:), allocatable :: b, x
-    double precision :: start, finish
+    double precision :: start, finish, temp 
     double precision, parameter :: epsilon=1.0d-7
+    integer, intent(in) :: n 
     integer :: i, k, nnelmt
     integer, parameter :: kmax=1000
- 
+
+            
     !instruction
     nnelmt = 3*n - 2 !non null elements of matrix A
     allocate(A%nnz(n+1), A%val(nnelmt), A%icol(nnelmt))
@@ -32,9 +30,9 @@ subroutine bench(n, temp)
             A%icol(k) = i
             A%val(k) = 4.0d0
         if (i < n) then
-                k = k + 1
-                A%icol(k) = i + 1
-                A%val(k) = -1.0d0
+            k = k + 1
+            A%icol(k) = i + 1
+            A%val(k) = -1.0d0
         end if
             A%nnz(i+1) = k
     end do
@@ -53,4 +51,4 @@ subroutine bench(n, temp)
 
     deallocate(x, b, A%nnz, A%val, A%icol)
 
-end subroutine bench
+end function bench

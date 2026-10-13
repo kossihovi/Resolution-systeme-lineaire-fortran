@@ -57,9 +57,9 @@ module linearsolver
             if (.NOT. converge) then 
                 print*, 'The algorithm attains kmax'
             end if 
-            print*, 'Iterations : ', k
+            !print*, 'Iterations : ', k
             !print*, 'The solution of the linear system is :', x
-            print*, 'The final residu is', r
+            !print*, 'The final residu is', r
 
             !Write the solution in file 'res.dat'
             open(unit=1, file= 'res.dat', status='replace')
